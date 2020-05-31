@@ -1,8 +1,14 @@
 {
   "name": "harperive",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "A Node.Js client to connect HarperDB local or cloud simplifying api request",
   "main": "index.js",
+  "types": "types/index.d.ts",
+  "files": [
+    "lib",
+    "types",
+    "index.js"
+  ],
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -10,7 +16,11 @@
     "type": "git",
     "url": "git+https://github.com/chandan-24/Harperive.git"
   },
-  "author": "Chandan Kumar",
+  "author": {
+    "name": "Chandan Kumar",
+    "email": "chandan.kumar9503@gmail.com",
+    "url": "https://www.linkedin.com/in/chandan24/"
+  },
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/chandan-24/Harperive/issues"
