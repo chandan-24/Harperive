@@ -120,22 +120,24 @@ export interface userDropOptions {
 
 
 export interface addRoleOptions {
-  role: string;
+  roleName: string;
   permission: object;
-  "permission.super_admin": boolean;
+  super_admin: boolean;
 }
 
 export interface alterRoleOptions {
   roleId: any;
   permission: object;
-  "permission.super_admin": boolean;
+  super_admin: boolean;
 }
 
 export interface dropRoleOptions{
   roleId: any;
 }
 
-export interface deleteFilesBeforeOptions extends tableOptions {
+export interface deleteFilesBeforeOptions {
+  schema: string;
+  table: string;
   date: any;
 }
 
@@ -146,7 +148,7 @@ export interface s3DetailsOptions {
   key: any;
 }
 
-export interface logsOptions extends tableOptions {
+export interface logsOptions {
   limit: number;
   start: number;
   from: any;
@@ -154,11 +156,11 @@ export interface logsOptions extends tableOptions {
   order: 'desc' | 'asc';
 }
 
-export interface jobDetailsOptions extends tableOptions {
+export interface jobDetailsOptions {
   jobId: any;
 }
 
-export interface jobsByDateOptions extends tableOptions{
+export interface jobsByDateOptions {
   from: any;
   until: any;
 }
