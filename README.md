@@ -77,7 +77,7 @@ Vist [harperdb-harperive-example](https://github.com/chandan-24/harperdb-harperi
 
 ### Schema
 
-- `schema (required) - name of schema you wish to create, drop, describe`
+- `schema (required)` - name of schema you wish to create, drop, describe
 
 #### Create Schema
 
@@ -252,8 +252,6 @@ const query = "DELETE FROM organisation.users WHERE id = 1"
 
 #### noSql Query
 
-harper
-
 **Insert Record(s)**
 
 - `schema (optional)` - schema where the table you are inserting records into lives
@@ -329,7 +327,7 @@ client.update(
 client.delete(
   {
     // schema is not passed here since it has been passed while creating client
-  table: 'users',
+    table: 'users',
     hashValues: [342]
   },
   (err, res) => {
