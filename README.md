@@ -27,7 +27,7 @@ It is built natively as a set of micro-services, making development and integrat
 
 Follow the instructions on the [HarperDB get started page](https://harperdb.io/developers/get-started/) for installation and get HarperDB up and running.
 
-Harperive is available as an [npm package](!npm).
+Harperive is available as an [npm package](https://www.npmjs.com/package/harperive).
 
 ``` bash
 # installs the package for your project
@@ -39,7 +39,7 @@ npm install harperive
 
 ### Options
 
-- `harperHost` - host name of the harperdb server, example: `harper-test-dev.harperdbcloud.com`
+- `harperHost` - host name of the harperdb server, example: `https://harper-test-dev.harperdbcloud.com`
 - `username` - username of your db user
 - `password` - passwprd of the user
 - `schema (optional)` - schema name, if not passed while creating client then need to passed while calling operations.
