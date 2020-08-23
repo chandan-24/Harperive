@@ -37,7 +37,7 @@ npm install harperive
 
 ## Connection
 
-### Options
+### DB_CONFIG
 
 - `harperHost` - host name of the harperdb server, example: `https://harper-test-dev.harperdbcloud.com`
 - `username` - username of your db user
@@ -67,6 +67,37 @@ client.anyOperation(options, (err, res) => {
   if(err) console.log(err);
   console.log(res);
 });
+```
+
+### Output Format
+``` javascript
+// success output
+{ 
+  statusCode: 200,
+  status: 'SUCCESS',
+  operation: 'search_by_value',
+  data: 
+  [ 
+    { 
+      __createdtime__: 1591894774234,
+       __updatedtime__: 1591894774234,
+       country: 'BELGIUM',
+       date: '1810-05-13',
+       id: 15,
+       image: '',
+       name: 'BELGIAN SHEPHERD DOG',
+       section: 'Sheepdogs'
+    }
+  ]
+}
+
+// failure output
+{ 
+  error: 'unknown attribute \'address\'',
+  statusCode: 500,
+  status: 'FAILED',
+  operation: 'search_by_value'
+}
 ```
 
 ## Operations
