@@ -12,6 +12,7 @@ It is built natively as a set of micro-services, making development and integrat
 
 ## Table of Contents
 
+- [Features](#features)
 - [Installation](#installation)
 - [Connection](#connection)
 - [Operations](#operations)
@@ -22,6 +23,12 @@ It is built natively as a set of micro-services, making development and integrat
   - [Role](#role)
   - [Utilities](#utilities)
 - [LICENSE - "MIT"](#license---"mit")
+
+## Features
+
+### Verstile function calls
+
+Every function call works with *Callback* as well as return *Promise*. [More deails](##example)
 
 ## Installation
 
@@ -37,12 +44,14 @@ npm install harperive
 
 ## Connection
 
+You need to create a db_client with following parameters and then you can perform any db operation.
+
 ### DB_CONFIG
 
 - `harperHost` - host name of the harperdb server, example: `https://harper-test-dev.harperdbcloud.com`
 - `username` - username of your db user
-- `password` - passwprd of the user
-- `schema (optional)` - schema name, if not passed while creating client then need to passed while calling operations.
+- `password` - password of the user
+- `schema (optional)` - schema name, if not passed while creating client then need to be passed while calling operations.
 
 ### Example
 
@@ -63,15 +72,36 @@ const DB_CONFIG = {
 const Client = harperive.Client;
 const client = new Client(DB_CONFIG);
 
-client.anyOperation(options, (err, res) => {
+// function call with callback
+
+client.dbOperation(options, (err, res) => {
   if(err) console.log(err);
-  console.log(res);
+  else console.log(res);
 });
+
+// function call expecting promise
+
+client.dbOperation(options)
+  .then(res => console.log(res))
+  .catch(err => console.log(err));
+
+// function call as async/await expecting promise
+
+async function callFunction() {
+  try {
+    const res = await client.dbOperation(options)
+    console.log(res);
+  } catch(err) {
+    console.log(err);
+  }
+}
+
+callFunction();
 ```
 
-### Output Format
+### Response Format
 ``` javascript
-// success output
+// success response (recieved in 2nd arg of the callback / resolved when called as promise)
 { 
   statusCode: 200,
   status: 'SUCCESS',
@@ -91,7 +121,7 @@ client.anyOperation(options, (err, res) => {
   ]
 }
 
-// failure output
+// failure(error) response (recieved in 1st arg of the callback / rejected when called as promise)
 { 
   error: 'unknown attribute \'address\'',
   statusCode: 500,
@@ -192,7 +222,7 @@ client.createTable(
 
 #### Describe Table
 
-- `schema (required)` - schema where the table you wish to describe lives.
+- `schema (required)` - schema is where the table you wish to describe lives.
 - `table (required)` - table you wish to describe.
 
 ```javascript
@@ -210,7 +240,7 @@ client.describeTable(
 
 #### Drop Table
 
-- `schema (required)` - schema where the table you are dropping lives.
+- `schema (required)` - schema is where the table you are dropping lives.
 - `table (required)` - name of the table you are dropping.
 
 NOTE: Dropping a table will delete all associated records in that table.
@@ -230,7 +260,7 @@ client.dropTable(
 
 #### Drop Attribute of a table
 
-- `schema (required)` - schema where the table you are dropping lives.
+- `schema (required)` - schema is where the table you are dropping lives.
 - `table (required)` - table where the attribute you are dropping lives.
 - `attribute (required)` - attribute that you intend to drop.
 
@@ -285,7 +315,7 @@ const query = "DELETE FROM organisation.users WHERE id = 1"
 
 **Insert Record(s)**
 
-- `schema (optional)` - schema where the table you are inserting records into lives
+- `schema (optional)` - schema is where the table you are inserting records into lives
 - `table (required)` - table where you want to insert records
 - `records (required)` - array of one or more records for insert
 
@@ -350,7 +380,7 @@ client.update(
 
 **Delete Record(s)**
 
-- `schema (optional)` - schema where the table you are deleting records into lives
+- `schema (optional)` - schema is where the table you are deleting records into lives
 - `table (required)` - table where you want to deleting records
 - `hash_values (required)` - array of one or more hash attribute (primary key) values, which identifies records to delete
 
@@ -370,7 +400,7 @@ client.delete(
 
 **Search by hash**
 
-- `schema (optional)` - schema where the table you are searching lives
+- `schema (optional)` - schema is where the table you are searching lives
 - `table (required)` - table you wish to search
 - `hash_attribute (required)` - hash_attribute for table you are searching. defined in add table
 - `hash_values(required)` - array of hashes to retrive
@@ -393,8 +423,8 @@ client.searchByHash(
 
 **Search by value**
 
-- `schema (optional)` - schema where the table you are searching lives
-table (required)` - table you wish to search
+- `schema (optional)` - schema is where the table you are searching lives
+- `table (required)` - table you wish to search
 - `search_attribute (required)` - attribute you wish to search can be any attribute
 - `search_value (required)` - value you wish to search - wild cards are allowed.
 - `get_attributes (required)` - define which attributes you want returned. Use '*' to return all attributes.
@@ -552,11 +582,12 @@ client.userInfo(
 
 ### Role
 
+HarperDB utilizes a Role-Based Access Control (RBAC) framework to manage access to HarperDB instances.  A user is assigned a role that determines the user's permissions to access database resources and run core operations. _Follow the [link](https://harperdbhelp.zendesk.com/hc/en-us/articles/360051486534-Managing-Role-Permissions?utm_campaign=Product%20Releases&utm_medium=email&_hsmi=93819466&_hsenc=p2ANqtz-_zMPdYFSW6dkxd9Sy8XT4DatGl4X3POK1WNs7YIhmcoCHVprWJcaMeaufik0PKKVa5pxikXiizBsgcUNrHnm1fE0WnAkiWjnWl0UFrGsEZ72jhugo&utm_content=93819466&utm_source=hs_email) for more information on roles_
+
 #### Add Role
 
 - `roleName (required)` : name of your role
-- `super_admin (optional)` : boolean value
-- `permission (required)` : follow following syntax to define a permission
+- `permission (required)` : follow below syntax to define a permission
 
 ```javascript
 const permission = {
@@ -567,7 +598,7 @@ const permission = {
         insert: Boolean,
         update: Boolean,
         delete: Boolean,
-        "attribute_restrictions": [
+        "attribute_permissions": [
           {
             "attribute_name": 'nameOfAttribute',
             read: Boolean,
@@ -578,9 +609,9 @@ const permission = {
         ]
       }
     },
-    "more_table": {},
+    "more_table_name": {},
   },
-  "more_schema": {},
+  "more_schema_name": {},
   "cluster_user": Boolean,
   "super_user": Boolean,
 }
@@ -592,7 +623,6 @@ const permission = {
 client.addRole(
   {
     roleName: 'support',
-    super_admin: false,
     permission: {
       organisation: {
         tables: {
@@ -601,7 +631,7 @@ client.addRole(
             insert: true,
             update: true,
             delete: false,
-            attribute_restrictions: []
+            attribute_permissions: []
           }
         }
       }
@@ -616,13 +646,16 @@ client.addRole(
 
 #### Alter Role
 
+- `id (required)`: the id value for the role you are altering
+- `role (optional)`: name value to update on the role you are altering
+- `permission (required)`: object defining permissions for users associated with this role
+
 ```javascript
 // update permissions for a role
 
 client.alterRole(
   {
     roleId: '13fbcbf3-394f-4350-94df-3eed8ff4d2fc',
-    super_admin: true,
     permission: {
       organisation: {
         tables: {
@@ -631,7 +664,7 @@ client.alterRole(
             insert: false,
             update: true,
             delete: false,
-            attribute_restrictions: [
+            attribute_permissions: [
               {
                 attribute_name: 'username',
                 read: true,
@@ -681,7 +714,7 @@ client.listRoles(
 )
 ```
 
-### Utilities Operations
+### Utilities
 
 #### Delete all records of a table before a given date
 
