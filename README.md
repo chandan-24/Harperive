@@ -28,7 +28,7 @@ It is built natively as a set of micro-services, making development and integrat
 
 ### Verstile function calls
 
-Every function call works with *Callback* as well as return *Promise*. [More deails](##example)
+Every DB Operation can performed with *Callback* as well as it returns *Promise*. See, [how it works?](##example)
 
 ## Installation
 
@@ -39,19 +39,19 @@ Harperive is available as an [npm package](https://www.npmjs.com/package/harperi
 ``` bash
 # installs the package for your project
 
-npm install harperive
+npm install harperive --save
 ```
 
 ## Connection
 
-You need to create a db_client with following parameters and then you can perform any db operation.
+You need to create a **DB Client** with following parameters passing the appropriate values and then you can perform any db operation.
 
 ### DB_CONFIG
 
-- `harperHost` - host name of the harperdb server, example: `https://harper-test-dev.harperdbcloud.com`
+- `harperHost` - host name of the harperdb server, *example: `https://harper-test-dev.harperdbcloud.com`*
 - `username` - username of your db user
 - `password` - password of the user
-- `schema (optional)` - schema name, if not passed while creating client then need to be passed while calling operations.
+- `schema (optional)` - schema name, if not passed while creating client then need to be passed while calling operations. (*Passing schema lets you perform CRUD operations on that schema*)
 
 ### Example
 
@@ -64,13 +64,14 @@ const DB_CONFIG = {
   password: process.env.DB_PASS,
   schema: process.env.SCHEMA, // optional params
   
-  /* Alternatively schema can be passed in the options while quering for any operations
-  *  on specific schema. Refer documanation for more clarification.
+  /* Alternatively schema can be passed in the options while quering for any operations on specific schema. 
+  *  Refer bewlow on how to execute operation for more clarification.
   */
 }
 
 const Client = harperive.Client;
 const client = new Client(DB_CONFIG);
+
 
 // function call with callback
 
@@ -79,15 +80,17 @@ client.dbOperation(options, (err, res) => {
   else console.log(res);
 });
 
+
 // function call expecting promise
 
 client.dbOperation(options)
   .then(res => console.log(res))
   .catch(err => console.log(err));
 
+
 // function call as async/await expecting promise
 
-async function callFunction() {
+async function executeQuery() {
   try {
     const res = await client.dbOperation(options)
     console.log(res);
@@ -96,7 +99,7 @@ async function callFunction() {
   }
 }
 
-callFunction();
+executeQuery();
 ```
 
 ### Response Format
@@ -144,28 +147,52 @@ Vist [harperdb-harperive-example](https://github.com/chandan-24/harperdb-harperi
 
 ```javascript
 // create new schema
+const options = { schema: "organisation" };
 
-client.createSchema(
-  { schema: "organisation" },
-  (err, res) => {
-    if(err) console.log(err);
-    else console.log(res);
-  }
-);
+// Callback
+client.createSchema(options, (err, res) => {
+  if(err) console.log(err);
+  else console.log(res);
+});
+
+// Promise
+client.createSchema(options)
+  .then((res) => console.log(res))
+  .catch((err) => console.log(err));
+
+// Async/await
+try {
+  const res = await client.createSchema(options)
+  console.log(res);
+} catch(err) {
+  console.log(err);
+}
 ```
 
 #### Describe Schema
 
 ```javascript
 // describe schema
+const options = { schema: "organisation" };
 
-client.describeSchema(
-  {schema: "temp"},
-  (err, res) => {
-    if(err) console.log(err);
-    else console.log(res);
-  }
-);
+// Callback
+client.describeSchema(options, (err, res) => {
+  if(err) console.log(err);
+  else console.log(res);
+});
+
+// Promise
+client.describeSchema(options)
+  .then((res) => console.log(res))
+  .catch((err) => console.log(err));
+
+// Async/await
+try {
+  const res = await client.describeSchema(options)
+  console.log(res);
+} catch(err) {
+  console.log(err);
+}
 ```
 
 #### Drop Schema
@@ -174,110 +201,185 @@ NOTE: Dropping a schema will delete all tables and all of their records in that 
 
 ```javascript
 // drop schema
+const options = { schema: "organisation" };
 
-client.dropSchema(
-  {schema: "temp"},
-  (err, res) => {
-    if(err) console.log(err);
-    else console.log(res);
-  }
-)
+// Callback
+client.dropSchema(options, (err, res) => {
+  if(err) console.log(err);
+  else console.log(res);
+});
+
+// Promise
+client.dropSchema(options)
+  .then((res) => console.log(res))
+  .catch((err) => console.log(err));
+
+// Async/await
+try {
+  const res = await client.dropSchema(options)
+  console.log(res);
+} catch(err) {
+  console.log(err);
+}
 ```
 
 #### Describe All Schema
 
 ```javascript
 // describe every schema and tables
+// Callback
+client.describeAll((err, res) => {
+  if(err) console.log(err);
+  else console.log(res);
+});
 
-client.describeAll(
-  (err, res) => {
-    if(err) console.log(err);
-    else console.log(res);
-  }
-);
+// Promise
+client.describeAll()
+  .then((res) => console.log(res))
+  .catch((err) => console.log(err));
+
+// Async/await
+try {
+  const res = await client.describeAll(options)
+  console.log(res);
+} catch(err) {
+  console.log(err);
+}
 ```
 
 ### Table
 
 #### Create Table
 
-- `schema (required)` - name of the schema where you want your table to live
+- `schema (optional)` - name of the schema where you want your table to live. (*If passed while creating client then don't need to pass it again.*)
 - `table (required)` - name of the table you are creating
 - `hash_attribute (required)` - hash(primary key) for the table
 
 ```javascript
-client.createTable(
-  {
-    schema: "organisation",
-    table: 'users',
-    hashAttribute: 'user_id',
-  },
-  (err, res) => {
-    if(err) console.log(err);
-    else console.log(res);
-  }
-);
+const options = {
+  schema: "organisation",
+  table: 'users',
+  hashAttribute: 'user_id',
+};
+
+// Callback
+client.createTable(options, (err, res) => {
+  if(err) console.log(err);
+  else console.log(res);
+});
+
+// Promise
+client.createTable(options)
+  .then((res) => console.log(res))
+  .catch((err) => console.log(err));
+
+// Async/await
+try {
+  const res = await client.createTable(options)
+  console.log(res);
+} catch(err) {
+  console.log(err);
+}
 
 ```
 
 #### Describe Table
 
-- `schema (required)` - schema is where the table you wish to describe lives.
+- `schema (optional)` - schema is where the table you wish to describe lives.
 - `table (required)` - table you wish to describe.
 
 ```javascript
-client.describeTable(
-  {
-    schema: "organisation",
-    table: 'users',
-  },
-  (err, res) => {
-    if(err) console.log(err);
-    else console.log(res);
-  }
-);
+const options = {
+  schema: "organisation",
+  table: 'users',
+};
+
+// Callback
+client.describeTable(options, (err, res) => {
+  if(err) console.log(err);
+  else console.log(res);
+});
+
+// Promise
+client.describeTable(options)
+  .then((res) => console.log(res))
+  .catch((err) => console.log(err));
+
+// Async/await
+try {
+  const res = await client.describeTable(options)
+  console.log(res);
+} catch(err) {
+  console.log(err);
+}
 ```
 
 #### Drop Table
 
-- `schema (required)` - schema is where the table you are dropping lives.
+- `schema (optional)` - schema is where the table you are dropping lives.
 - `table (required)` - name of the table you are dropping.
 
 NOTE: Dropping a table will delete all associated records in that table.
 
 ```javascript
-client.dropTable(
-  {
-    schema: "organisation",
-    table: 'users',
-  },
-  (err, res) => {
-    if(err) console.log(err);
-    else console.log(res);
-  }
-);
+const options = {
+  schema: "organisation",
+  table: 'users',
+};
+
+// Callback
+client.dropTable(options, (err, res) => {
+  if(err) console.log(err);
+  else console.log(res);
+});
+
+// Promise
+client.dropTable(options)
+  .then((res) => console.log(res))
+  .catch((err) => console.log(err));
+
+// Async/await
+try {
+  const res = await client.dropTable(options)
+  console.log(res);
+} catch(err) {
+  console.log(err);
+}
 ```
 
 #### Drop Attribute of a table
 
-- `schema (required)` - schema is where the table you are dropping lives.
+- `schema (optional)` - schema is where the table you are dropping lives.
 - `table (required)` - table where the attribute you are dropping lives.
 - `attribute (required)` - attribute that you intend to drop.
 
 NOTE: Dropping an attribute will delete all associated values in that table.
 
 ```javascript
-client.dropAttribute(
-  {
-    schema: "organisation",
-    table: 'users',
-    attribute: 'usename',
-  },
-  (err, res) => {
-    if(err) console.log(err);
-    else console.log(res);
-  }
-);
+const options = {
+  schema: "organisation",
+  table: 'users',
+  hashAttribute: 'user_id',
+};
+
+// Callback
+client.dropAttribute(options, (err, res) => {
+  if(err) console.log(err);
+  else console.log(res);
+});
+
+// Promise
+client.dropAttribute(options)
+  .then((res) => console.log(res))
+  .catch((err) => console.log(err));
+
+// Async/await
+try {
+  const res = await client.dropAttribute(options)
+  console.log(res);
+} catch(err) {
+  console.log(err);
+}
 ```
 
 ### Query
@@ -290,25 +392,35 @@ _Refer harperDB SQL guide [here](https://harperdbhelp.zendesk.com/hc/en-us/artic
 
 ```javascript
 // insert operation sql
-
-const query = "insert into organisation.users (user_id, username, first_name, middle_name, last_name) values(20201, 'richy_rich', 'Richard', 'H.', 'Cole')"
-
-client.query(
-  query,
-  (err, res) => {
-    if(err) console.log(err);
-    else console.log(res);
-  }
-);
+const query = "insert into organisation.users (user_id, username, first_name, middle_name, last_name) values(20201, 'richy_rich', 'Richard', 'H.', 'Cole')";
 
 //select
-const query = "select * from organisation.users where id = 1"
+const querySelect = "select * from organisation.users where id = 1";
 
 // update
-const query = "update organisation.users set first_name = 'penelope' where id = 1"
+const queryUpdate = "update organisation.users set first_name = 'penelope' where id = 1";
 
 // delete
-const query = "DELETE FROM organisation.users WHERE id = 1"
+const queryDelete = "DELETE FROM organisation.users WHERE id = 1";
+
+//Callback
+client.query(query, (err, res) => {
+  if(err) console.log(err);
+  else console.log(res);
+});
+
+// Promise
+client.query(options)
+  .then((res) => console.log(res))
+  .catch((err) => console.log(err));
+
+// Async/await
+try {
+  const res = await client.query(options)
+  console.log(res);
+} catch(err) {
+  console.log(err);
+}
 ```
 
 #### noSql Query
@@ -322,31 +434,44 @@ const query = "DELETE FROM organisation.users WHERE id = 1"
 NOTE: Hash value of the inserted JSON record MUST be supplied on insert.
 
 ```javascript
-client.insert(
-  {
-    // schema is not passed here since it has been passed while creating client
-    table: 'users',
-    records: [
-      {
-        user_id: 342,
-        username: 'samf12',
-        first_name: 'Sam',
-        last_name: 'Fag'
-      },
-      {
-        user_id: 43,
-        username: 'simon_j',
-        first_name: 'James',
-        middle_name: 'J.',
-        last_name: 'Simon'
-      }
-    ]
-  },
-  (err, res) => {
-    if(err) console.log(err);
-    else console.log(res);
-  }
-)
+const options = {
+  // schema is not passed here since it has been passed while creating client
+  table: 'users',
+  records: [
+    {
+      user_id: 342,
+      username: 'samf12',
+      first_name: 'Sam',
+      last_name: 'Fag'
+    },
+    {
+      user_id: 43,
+      username: 'simon_j',
+      first_name: 'James',
+      middle_name: 'J.',
+      last_name: 'Simon'
+    }
+  ]
+};
+
+// Callback
+client.insert(options, (err, res) => {
+  if(err) console.log(err);
+  else console.log(res);
+});
+
+// Promise
+client.insert(options)
+  .then((res) => console.log(res))
+  .catch((err) => console.log(err));
+
+// Async/await
+try {
+  const res = await client.insert(options)
+  console.log(res);
+} catch(err) {
+  console.log(err);
+}
 ```
 
 **Update Record(s)**
@@ -358,91 +483,143 @@ client.insert(
 NOTE: Hash value of the updated JSON record MUST be supplied on update.
 
 ```javascript
-client.update(
-  {
-    // schema is not passed here since it has been passed while creating client
-    table: 'users',
-    records: [
-      {
-        first_name: 'Rajesh',
-        last_name: 'Ranjan',
-        user_id: 213,
-        username: 'rajesh'
-      }
-    ]
-  },
-  (err, res) => {
-    if(err) console.log(err);
-    else console.log(res);
-  }
-);
+const options = {
+  // schema is not passed here since it has been passed while creating client
+  table: 'users',
+  records: [
+    {
+      first_name: 'Rajesh',
+      last_name: 'Ranjan',
+      user_id: 213,
+      username: 'rajesh'
+    }
+  ]
+};
+
+// Callback
+client.update(options, (err, res) => {
+  if(err) console.log(err);
+  else console.log(res);
+});
+
+// Promise
+client.update(options)
+  .then((res) => console.log(res))
+  .catch((err) => console.log(err));
+
+// Async/await
+try {
+  const res = await client.update(options)
+  console.log(res);
+} catch(err) {
+  console.log(err);
+}
 ```
 
 **Delete Record(s)**
 
 - `schema (optional)` - schema is where the table you are deleting records into lives
 - `table (required)` - table where you want to deleting records
-- `hash_values (required)` - array of one or more hash attribute (primary key) values, which identifies records to delete
+- `hashValues (required)` - array of one or more hash attribute (primary key) values, which identifies records to delete
 
 ```javascript
-client.delete(
-  {
-    // schema is not passed here since it has been passed while creating client
-    table: 'users',
-    hashValues: [342]
-  },
-  (err, res) => {
-    if(err) console.log(err);
-    else console.log(res);
-  }
-)
+
+const options = {
+  // schema is not passed here since it has been passed while creating client
+  table: 'users',
+  hashValues: [342]
+};
+
+// Callback
+client.delete(options, (err, res) => {
+  if(err) console.log(err);
+  else console.log(res);
+});
+
+// Promise
+client.delete(options)
+  .then((res) => console.log(res))
+  .catch((err) => console.log(err));
+
+// Async/await
+try {
+  const res = await client.delete(options)
+  console.log(res);
+} catch(err) {
+  console.log(err);
+}
 ```
 
 **Search by hash**
 
 - `schema (optional)` - schema is where the table you are searching lives
 - `table (required)` - table you wish to search
-- `hash_attribute (required)` - hash_attribute for table you are searching. defined in add table
-- `hash_values(required)` - array of hashes to retrive
-- `get_attributes (required)` - define which attributes you want returned. Use '*' to return all attributes
+- `hashValues(required)` - array of hashes to retrive
+- `attributes (required)` - define which attributes you want returned. Use '*' to return all attributes
 
 ```javascript
-client.searchByHash(
-  {
-    // schema is not passed here since it has been passed while creating client
-    table: 'users',
-    hashValues: ['43', '213'],
-    attributes: ['*'],
-  },
-  (err, res) => {
-    if(err) console.log(err);
-    else console.log(res);
-  }
-)
+const options = {
+  // schema is not passed here since it has been passed while creating client
+  table: 'users',
+  hashValues: ['43', '213'],
+  attributes: ['*'],
+};
+
+// Callback
+client.searchByHash(options, (err, res) => {
+  if(err) console.log(err);
+  else console.log(res);
+});
+
+// Promise
+client.searchByHash(options)
+  .then((res) => console.log(res))
+  .catch((err) => console.log(err));
+
+// Async/await
+try {
+  const res = await client.searchByHash(options)
+  console.log(res);
+} catch(err) {
+  console.log(err);
+}
 ```
 
 **Search by value**
 
 - `schema (optional)` - schema is where the table you are searching lives
 - `table (required)` - table you wish to search
-- `search_attribute (required)` - attribute you wish to search can be any attribute
-- `search_value (required)` - value you wish to search - wild cards are allowed.
-- `get_attributes (required)` - define which attributes you want returned. Use '*' to return all attributes.
+- `searchAttribute (required)` - attribute you wish to search can be any attribute
+- `searchValue (required)` - value you wish to search - wild cards are allowed.
+- `attributes (required)` - define which attributes you want returned. Use '*' to return all attributes.
 
 ```javascript
-client.searchByValue(
-  {
-    // schema is not passed here since it has been passed while creating client
-    table: 'users',
-    searchAttribute: "username",
-    searchValue: 'simon_j',
-    attributes: ['*'],
-  },
-  (err, res) => {
-    if(err) console.log(err);
-    else console.log(res);
-  }
-)
+const options = {
+  // schema is not passed here since it has been passed while creating client
+  table: 'users',
+  searchAttribute: "username",
+  searchValue: 'simon_j',
+  attributes: ['*'],
+};
+
+// Callback
+client.searchByValue(options, (err, res) => {
+  if(err) console.log(err);
+  else console.log(res);
+});
+
+// Promise
+client.searchByValue(options)
+  .then((res) => console.log(res))
+  .catch((err) => console.log(err));
+
+// Async/await
+try {
+  const res = await client.searchByValue(options)
+  console.log(res);
+} catch(err) {
+  console.log(err);
+}
 ```
 
 #### CSV operations
