@@ -626,23 +626,46 @@ try {
 
 **csv url load**
 
+- `action (optional)` - type of action you want to perform. Options are insert or update, default is insert
+- `schema (required)` - name of the schema where you are loading your data
+- `table (required)` - name of the table where you are loading your data
+- `csv_url (required)` - URL of the csv file
+
 ```javascript
 const url = 'https://s3.amazonaws.com/complimentarydata/breeds.csv';
 
-client.csvUrlLoad(
-  {
-    schema: 'dev',
-    table: 'breeds',
-    url: url,
-  },
-  (err, res) => {
-    if(err) console.log(err);
-    else console.log(res.data);
-  }
-)
+const options = {
+  schema: 'dev',
+  table: 'breeds',
+  url,
+}
+
+// Callback
+client.csvUrlLoad(options, (err, res) => {
+  if(err) console.log(err);
+  else console.log(res);
+});
+
+// Promise
+client.csvUrlLoad(options)
+  .then((res) => console.log(res))
+  .catch((err) => console.log(err));
+
+// Async/await
+try {
+  const res = await client.csvUrlLoad(options)
+  console.log(res);
+} catch(err) {
+  console.log(err);
+}
 ```
 
 **csv data load**
+
+- `action (optional)` - type of action you want to perform. Options are insert or update, default is insert
+- `schema (required)` - name of the schema where you are loading your data
+- `table (required)` - name of the table where you are loading your data
+- `data (required)` - csv data to import into HaprerDB
 
 ```javascript
 // install neat-csv package in your project
@@ -651,110 +674,39 @@ const fs = require('fs');
 
 // First we load csv data from file into a variable and then pass in the query.
 
+
+
 fs.readFile('./data/techCrunch.csv', async (err, data) => {
   if (err) {
     console.error(err)
     return
   }
   const csvData = await neatCsv(data);
+  const options = {
+    schema: 'dev',
+    table: 'breeds',
+    data: csvData,
+  }
 
-  client.csvDataLoad(
-    {
-      schema: 'cars',
-      table: 'tech_crunch_funding',
-      data: csvData,
-    },
-    (err, res) => {
-      if(err) console.log(err);
-      else console.log(res);
-    }
-  )
+  // Callback
+  client.csvDataLoad(options, (err, res) => {
+    if(err) console.log(err);
+    else console.log(res);
+  });
+
+  // Promise
+  client.csvDataLoad(options)
+    .then((res) => console.log(res))
+    .catch((err) => console.log(err));
+
+  // Async/await
+  try {
+    const res = await client.csvDataLoad(options)
+    console.log(res);
+  } catch(err) {
+    console.log(err);
+  }
 })
-```
-
-### User
-
-#### Add User
-
-- `username (required)` : username for your user
-- `password (required)` : password
-- `role(required)` : role id for which you want to create user
-- `active(required)` : boolean value
-
-```javascript
-// add new user for a given role
-
-client.addUser(
-  {
-    username: 'junior_support',
-    password: 'org@123',
-    role: '13fbcbf3-394f-4350-94df-3eed8ff4d2fc',
-    active: true
-  },
-  (err, res) => {
-    if(err) console.log(err);
-    else console.log(res);
-  }
-)
-```
-
-#### Alter User
-
-```javascript
-// update role, password or status of a user
-
-client.alterUser(
-  {
-    username: 'junior_support',
-    password: 'junior@org',
-  },
-  (err, res) => {
-    if(err) console.log(err);
-    else console.log(res);
-  }
-)
-```
-
-#### Drop User
-
-```javascript
-// delete a user
-
-client.dropUser(
-  {
-    username: 'junior_support',
-  },
-  (err, res) => {
-    if(err) console.log(err);
-    else console.log(res);
-  }
-);
-```
-
-#### List Users
-
-```javascript
-// list all user
-
-client.listUsers(
-  (err, res) => {
-    if(err) console.log(err);
-    else console.log(res);
-  }
-);
-```
-
-#### User Info
-
-```javascript
-// get the details of current user used for creating client
-
-client.userInfo(
-  (err, res) => {
-    if(err) console.log(err);
-    else console.log(res);
-  }
-);
 ```
 
 ### Role
@@ -796,70 +748,96 @@ const permission = {
 
 ```javascript
 // add new role
-
-client.addRole(
-  {
-    roleName: 'support',
-    permission: {
-      organisation: {
-        tables: {
-          users: {
-            read: true,
-            insert: true,
-            update: true,
-            delete: false,
-            attribute_permissions: []
-          }
+const options = {
+  roleName: 'support',
+  permission: {
+    organisation: {
+      tables: {
+        users: {
+          read: true,
+          insert: true,
+          update: true,
+          delete: false,
+          attribute_permissions: []
         }
       }
     }
-  },
-  (err, res) => {
-    if(err) console.log(err);
-    else console.log(res);
   }
-)
+};
+
+
+// Callback
+client.addRole(options, (err, res) => {
+  if(err) console.log(err);
+  else console.log(res);
+});
+
+// Promise
+client.addRole(options)
+  .then((res) => console.log(res))
+  .catch((err) => console.log(err));
+
+// Async/await
+try {
+  const res = await client.addRole(options)
+  console.log(res);
+} catch(err) {
+  console.log(err);
+}
 ```
 
 #### Alter Role
 
-- `id (required)`: the id value for the role you are altering
+- `roleId (required)`: the id value for the role you are altering
 - `role (optional)`: name value to update on the role you are altering
 - `permission (required)`: object defining permissions for users associated with this role
 
 ```javascript
 // update permissions for a role
 
-client.alterRole(
-  {
-    roleId: '13fbcbf3-394f-4350-94df-3eed8ff4d2fc',
-    permission: {
-      organisation: {
-        tables: {
-          users: {
-            read: true,
-            insert: false,
-            update: true,
-            delete: false,
-            attribute_permissions: [
-              {
-                attribute_name: 'username',
-                read: true,
-                insert: false,
-                update: false,
-                delete: false,
-              },
-            ]
-          }
+const options = {
+  roleId: '13fbcbf3-394f-4350-94df-3eed8ff4d2fc',
+  permission: {
+    organisation: {
+      tables: {
+        users: {
+          read: true,
+          insert: false,
+          update: true,
+          delete: false,
+          attribute_permissions: [
+            {
+              attribute_name: 'username',
+              read: true,
+              insert: false,
+              update: false,
+              delete: false,
+            },
+          ]
         }
       }
     }
-  },
-  (err, res) => {
-    if(err) console.log(err);
-    else console.log(res);
   }
-)
+};
+
+// Callback
+client.alterRole(options, (err, res) => {
+  if(err) console.log(err);
+  else console.log(res);
+});
+
+// Promise
+client.alterRole(options)
+  .then((res) => console.log(res))
+  .catch((err) => console.log(err));
+
+// Async/await
+try {
+  const res = await client.alterRole(options)
+  console.log(res);
+} catch(err) {
+  console.log(err);
+}
 ```
 
 #### Drop Role
@@ -867,15 +845,28 @@ client.alterRole(
 - `roleId (required)` : role id of the role you wish to delete
 
 ```javascript
-client.dropRole(
-  {
-    roleId: 'b746dd2e-a09f-485c-8a79-26ef6d29dabf'
-  },
-  (err, res) => {
-    if(err) console.log(err);
-    else console.log(res);
-  }
-)
+const options = {
+  roleId: 'b746dd2e-a09f-485c-8a79-26ef6d29dabf'
+}
+
+// Callback
+client.listRoles(options, (err, res) => {
+  if(err) console.log(err);
+  else console.log(res);
+});
+
+// Promise
+client.listRoles(options)
+  .then((res) => console.log(res))
+  .catch((err) => console.log(err));
+
+// Async/await
+try {
+  const res = await client.listRoles(options)
+  console.log(res);
+} catch(err) {
+  console.log(err);
+}
 ```
 
 #### List Roles
@@ -883,12 +874,179 @@ client.dropRole(
 ```javascript
 // List all roles
 
-client.listRoles(
-  (err, res) => {
-    if(err) console.log(err);
-    else console.log(res);
-  }
-)
+// Callback
+client.listRoles((err, res) => {
+  if(err) console.log(err);
+  else console.log(res);
+});
+
+// Promise
+client.listRoles()
+  .then((res) => console.log(res))
+  .catch((err) => console.log(err));
+
+// Async/await
+try {
+  const res = await client.listRoles()
+  console.log(res);
+} catch(err) {
+  console.log(err);
+}
+```
+
+### User
+*Operation is restricted to super_user roles only*
+
+#### Add User
+
+- `username (required)` - username assigned to the user. It can not be altered after adding the user. It serves as the hash.
+- `password (required)` - clear text for password. HarperDB will encrypt the password upon reciept. 
+- `role(required)` : role id for which you want to create user.
+
+```javascript
+// add new user for a given role
+
+const options = {
+  username: 'junior_support',
+  password: 'org@123',
+  role: '13fbcbf3-394f-4350-94df-3eed8ff4d2fc',
+  active: true
+}
+
+
+// Callback
+client.addUser(options, (err, res) => {
+  if(err) console.log(err);
+  else console.log(res);
+});
+
+// Promise
+client.addUser(options)
+  .then((res) => console.log(res))
+  .catch((err) => console.log(err));
+
+// Async/await
+try {
+  const res = await client.addUser(options)
+  console.log(res);
+} catch(err) {
+  console.log(err);
+}
+```
+
+#### Alter User
+
+- `role (optional)` - id of the role you wish to assign to the user. See add_role for more detail.
+- `username (required)` - username assigned to the user. It can not be altered after adding the user. It serves as the hash.
+- `password (optional)` - clear text for password. HarperDB will encrypt the password upon reciept. 
+
+```javascript
+// update role, password or status of a user
+
+const options = {
+  username: 'junior_support',
+  password: 'junior@org',
+}
+
+
+// Callback
+client.alterUser(options, (err, res) => {
+  if(err) console.log(err);
+  else console.log(res);
+});
+
+// Promise
+client.alterUser(options)
+  .then((res) => console.log(res))
+  .catch((err) => console.log(err));
+
+// Async/await
+try {
+  const res = await client.alterUser(options)
+  console.log(res);
+} catch(err) {
+  console.log(err);
+}
+```
+
+#### Drop User
+
+- `username (required)` - username assigned to the user. 
+
+```javascript
+// delete a user
+const options = {
+  username: 'junior_support',
+}
+
+// Callback
+client.dropUser(options, (err, res) => {
+  if(err) console.log(err);
+  else console.log(res);
+});
+
+// Promise
+client.dropUser(options)
+  .then((res) => console.log(res))
+  .catch((err) => console.log(err));
+
+// Async/await
+try {
+  const res = await client.dropUser(options)
+  console.log(res);
+} catch(err) {
+  console.log(err);
+}
+```
+
+#### List Users
+
+```javascript
+// list all user
+
+// Callback
+client.listUsers((err, res) => {
+  if(err) console.log(err);
+  else console.log(res);
+});
+
+// Promise
+client.listUsers()
+  .then((res) => console.log(res))
+  .catch((err) => console.log(err));
+
+// Async/await
+try {
+  const res = await client.listUsers()
+  console.log(res);
+} catch(err) {
+  console.log(err);
+}
+```
+
+#### User Info
+
+```javascript
+// get the details of current user used for creating client
+
+// Callback
+client.userInfo((err, res) => {
+  if(err) console.log(err);
+  else console.log(res);
+});
+
+// Promise
+client.userInfo()
+  .then((res) => console.log(res))
+  .catch((err) => console.log(err));
+
+// Async/await
+try {
+  const res = await client.userInfo()
+  console.log(res);
+} catch(err) {
+  console.log(err);
+}
 ```
 
 ### Utilities
@@ -900,16 +1058,30 @@ client.listRoles(
 - `table (required)` - name of the table where you are deleting your data
 
 ```javascript
-client.deleteFilesBefore(
-  {
-    schema: 'cars',
-    table: 'tech_crunch_funding',
-    date: '2020-05-31',
-  },
-  (err, res) => {
+const options = {
+  schema: 'cars',
+  table: 'tech_crunch_funding',
+  date: '2020-05-31',
+};
+
+// Callback
+client.deleteFilesBefore(options, (err, res) => {
   if(err) console.log(err);
   else console.log(res);
-})
+});
+
+// Promise
+client.deleteFilesBefore(options)
+  .then((res) => console.log(res))
+  .catch((err) => console.log(err));
+
+// Async/await
+try {
+  const res = await client.deleteFilesBefore(options)
+  console.log(res);
+} catch(err) {
+  console.log(err);
+}
 ```
 
 #### Export records to AWS S3(currently code not written)
@@ -925,27 +1097,55 @@ Coming Soon ...
 - `order (optional)` order to display logs desc or asc by timestamp
 
 ```javascript
-client.readLogs(
-  {
-    limit:1000,
-    start:0,
-    from:"2020-06-01 17:00:00",
-    until:"2020-06-01 21:00:00",
-    order:"desc"
-  },
-  (err, res) => {
+const options = {
+  limit:1000,
+  start:0,
+  from:"2020-06-01 17:00:00",
+  until:"2020-06-01 21:00:00",
+  order:"desc"
+};
+
+// Callback
+client.readLogs(options, (err, res) => {
   if(err) console.log(err);
   else console.log(res);
-})
+});
+
+// Promise
+client.readLogs(options)
+  .then((res) => console.log(res))
+  .catch((err) => console.log(err));
+
+// Async/await
+try {
+  const res = await client.readLogs(options)
+  console.log(res);
+} catch(err) {
+  console.log(err);
+}
 ```
 
 #### Get system Information
 
 ```javascript
+// Callback
 client.systemInformation((err, res) => {
   if(err) console.log(err);
   else console.log(res);
-})
+});
+
+// Promise
+client.systemInformation()
+  .then((res) => console.log(res))
+  .catch((err) => console.log(err));
+
+// Async/await
+try {
+  const res = await client.systemInformation()
+  console.log(res);
+} catch(err) {
+  console.log(err);
+}
 ```
 
 #### Get job details for a given jod id
@@ -953,12 +1153,28 @@ client.systemInformation((err, res) => {
 - `jobId (required)` : job id of the job you wish to view
 
 ```javascript
-client.getJobDetails(
-  { jobId: 'f13d813f-64d9-44d8-9a39-7135136c7b92' },
-  (err, res) => {
+const options = {
+  jobId: 'f13d813f-64d9-44d8-9a39-7135136c7b92'
+};
+
+// Callback
+client.getJobDetails(options, (err, res) => {
   if(err) console.log(err);
   else console.log(res);
-})
+});
+
+// Promise
+client.getJobDetails(options)
+  .then((res) => console.log(res))
+  .catch((err) => console.log(err));
+
+// Async/await
+try {
+  const res = await client.getJobDetails(options)
+  console.log(res);
+} catch(err) {
+  console.log(err);
+}
 ```
 
 #### Get all jobs between dates
@@ -967,15 +1183,29 @@ client.getJobDetails(
 - `until (required)` - the date you wish to end the search
 
 ```javascript
-client.getJobsByDate(
-  {
-    from: "2020-05-31",
-    until: "2020-06-02",
-  },
-  (err, res) => {
+const options = {
+  from: "2020-05-31",
+  until: "2020-06-02",
+};
+
+// Callback
+client.getJobsByDate(options, (err, res) => {
   if(err) console.log(err);
   else console.log(res);
-})
+});
+
+// Promise
+client.getJobsByDate(options)
+  .then((res) => console.log(res))
+  .catch((err) => console.log(err));
+
+// Async/await
+try {
+  const res = await client.getJobsByDate(options)
+  console.log(res);
+} catch(err) {
+  console.log(err);
+}
 ```
 
 ## LICENSE - "MIT"
