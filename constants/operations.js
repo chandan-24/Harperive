@@ -37,6 +37,9 @@ const operationAllowed = {
   IMPORT_FROM_S3: 'import_from_s3',
 
   READ_LOG: 'read_log',
+  READ_TRANSACTION_LOG: 'read_transaction_log',
+  DELETE_TRANSACTION_LOGS_BEFORE: 'delete_transaction_logs_before',
+
   DELETE_FILES_BEFORE: 'delete_files_before',
   SYSTEM_INFORMATION: 'system_information',
   GET_JOB: 'get_job',
