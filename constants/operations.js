@@ -14,6 +14,7 @@ const operationAllowed = {
   SQL: 'sql',
   INSERT: 'insert',
   UPDATE: 'update',
+  UPSERT: 'upsert',
   DELETE: 'delete',
   SEARCH_BY_HASH: 'search_by_hash',
   SEARCH_BY_VALUE: 'search_by_value',
