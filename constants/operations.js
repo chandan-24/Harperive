@@ -20,7 +20,6 @@ const operationAllowed = {
   SEARCH_BY_VALUE: 'search_by_value',
 
   CSV_DATA_LOAD: 'csv_data_load',
-  CSV_FILE_LOAD: 'csv_file_load',
   CSV_URL_LOAD: 'csv_url_load',
 
   ADD_USER: 'add_user',
@@ -34,9 +33,11 @@ const operationAllowed = {
   DROP_ROLE: 'drop_role',
   LIST_ROLES: 'list_roles',
 
-  DELETE_FILES_BEFORE: 'delete_files_before',
   EXPORT_TO_S3: 'export_to_s3',
+  IMPORT_FROM_S3: 'import_from_s3',
+
   READ_LOG: 'read_log',
+  DELETE_FILES_BEFORE: 'delete_files_before',
   SYSTEM_INFORMATION: 'system_information',
   GET_JOB: 'get_job',
   SEARCH_JOB_DATE: 'search_jobs_by_start_date',
