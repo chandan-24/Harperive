@@ -711,7 +711,7 @@ fs.readFile('./data/techCrunch.csv', async (err, data) => {
 
 ### Role
 
-HarperDB utilizes a Role-Based Access Control (RBAC) framework to manage access to HarperDB instances.  A user is assigned a role that determines the user's permissions to access database resources and run core operations. _Follow the [link](https://harperdbhelp.zendesk.com/hc/en-us/articles/360051486534-Managing-Role-Permissions?utm_campaign=Product%20Releases&utm_medium=email&_hsmi=93819466&_hsenc=p2ANqtz-_zMPdYFSW6dkxd9Sy8XT4DatGl4X3POK1WNs7YIhmcoCHVprWJcaMeaufik0PKKVa5pxikXiizBsgcUNrHnm1fE0WnAkiWjnWl0UFrGsEZ72jhugo&utm_content=93819466&utm_source=hs_email) for more information on roles_
+HarperDB utilizes a Role-Based Access Control (RBAC) framework to manage access to HarperDB instances.  A user is assigned a role that determines the user's permissions to access database resources and run core operations. _Follow the [link](https://harperdb.io/developers/documentation/security/users-roles/) for more information on roles_
 
 #### Add Role
 
