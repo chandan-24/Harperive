@@ -1,9 +1,3 @@
-<p>
-  <a href="#"><img width="250" src="https://img.techpowerup.org/200604/harperive.png" alt="Harperive logo"></a>
-</p>
-
-# A NodeJs Client for HarperDB
-
 ## Introduction
 
 _**HarperDB** is a SQL/NoSQL data management platform. It is fully indexed, doesn't duplicate data, and runs on any device- from the edge to the cloud._
