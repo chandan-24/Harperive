@@ -9,6 +9,7 @@ const operationAllowed = {
   CREATE_TABLE: 'create_table',
   DESCRIBE_TABLE: 'describe_table',
   DROP_TABLE: 'drop_table',
+  CREATE_ATTRIBUTE: 'create_attribute',
   DROP_ATTRIBUTE: 'drop_attribute',
 
   SQL: 'sql',
