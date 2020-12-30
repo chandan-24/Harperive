@@ -1,14 +1,32 @@
-<p>
-  <a href="#"><img width="250" src="https://img.techpowerup.org/200604/harperive.png" alt="Harperive logo"></a>
+<p align="center">
+  <a href="https://github.com/chandan-24/Harperive">
+    <img width="250" src="https://img.techpowerup.org/200604/harperive.png" alt="Harperive logo">
+  </a>
+
+  <p align="center" style="font-size: 200%">A NodeJs Client for HarperDB</p>
+
+  <p align="center">
+    <img alt="Language grade: JavaScript" src="https://img.shields.io/lgtm/grade/javascript/g/chandan-24/Harperive.svg?logo=lgtm&logoWidth=18?style=flat"/>
+    <img alt="MIT License" src="https://img.shields.io/github/license/chandan-24/Harperive?style=flat"/>
+    <a href="https://www.npmjs.com/package/harperive">
+      <img alt="Current npm package version." src="https://img.shields.io/npm/v/harperive?color=green&label=npm%20package" />
+    </a>
+    <img alt="NPM Downloads" src="https://img.shields.io/npm/dm/harperive.svg?color=green" />
+    <img alt="Github Stars" src="https://img.shields.io/github/stars/chandan-24/Harperive?color=green" />
+  </p>
 </p>
 
-# A NodeJs Client for HarperDB
+---
 
 ## Introduction
 
 _**HarperDB** is a SQL/NoSQL data management platform. It is fully indexed, doesn't duplicate data, and runs on any device- from the edge to the cloud._
 
 It is built natively as a set of micro-services, making development and integration easy and seamless.  HarperDB utilizes a single-endpoint for all operations.  HarperDB’s RESTful nature makes it stateless, stable, and scalable.
+
+_**Harperive** is a node.js driver for HarperDb._
+
+It is written in JavaScript, it natively supports promises and functions can be executed with callbacks. Each HarperDb operation is exposed as a function on the client object. All functions take query options and an optional callback function.
 
 ## Table of Contents
 
@@ -26,9 +44,9 @@ It is built natively as a set of micro-services, making development and integrat
 
 ## Features
 
-### Verstile function calls
+### Versatile function calls
 
-Every DB Operation can performed with *Callback* as well as it returns *Promise*. See, [how it works?](##example)
+Every DB Operation works with *callback* and also returns *Promise* if called as async/await or promises. See, [how it works?](##example)
 
 ## Installation
 
@@ -51,6 +69,7 @@ You need to create a **DB Client** with following parameters passing the appropr
 - `harperHost` - host name of the harperdb server, *example: `https://harper-test-dev.harperdbcloud.com`*
 - `username` - username of your db user
 - `password` - password of the user
+- `token (optional)` - jwt authentication token, pass either username/password or token for authorised database operation.
 - `schema (optional)` - schema name, if not passed while creating client then need to be passed while calling operations. (*Passing schema lets you perform CRUD operations on that schema*)
 
 ### Example
@@ -62,6 +81,7 @@ const DB_CONFIG = {
   harperHost: process.env.DB_HOST,
   username: process.env.DB_USER,
   password: process.env.DB_PASS,
+  token: process.env.OPERATION_TOKEN, // pass either username/password or token
   schema: process.env.SCHEMA, // optional params
   
   /* Alternatively schema can be passed in the options while quering for any operations on specific schema. 
