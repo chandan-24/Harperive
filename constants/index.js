@@ -20,4 +20,13 @@ module.exports = {
     USERNAME: 'username',
     HASH_VALUE: 'hash_value',
   },
+
+  DB_OPS: {
+    INSERT: 'insert',
+    UPDATE: 'update',
+    UPSERT: 'upsert',
+    DELETE: 'delete',
+  },
+
+  NULL: null,
 };
