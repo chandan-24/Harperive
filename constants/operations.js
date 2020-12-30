@@ -40,6 +40,9 @@ const operationAllowed = {
   READ_TRANSACTION_LOG: 'read_transaction_log',
   DELETE_TRANSACTION_LOGS_BEFORE: 'delete_transaction_logs_before',
 
+  CREATE_AUTHENTICATION_TOKEN: 'create_authentication_tokens',
+  REFRESH_OPERATION_TOKEN: 'refresh_operation_token',
+
   DELETE_FILES_BEFORE: 'delete_files_before',
   SYSTEM_INFORMATION: 'system_information',
   GET_JOB: 'get_job',
