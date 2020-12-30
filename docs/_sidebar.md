@@ -12,4 +12,4 @@
   * [logs](operations/logs.md)
   * [auth](operations/auth.md)
   * [Utilities](operations/utilities.md)
-* [LICENSE - "MIT"](#license.md")
+* [LICENSE - "MIT"](license.md)
