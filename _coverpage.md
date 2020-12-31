@@ -1,6 +1,6 @@
 ![logo](media/logo.png)
 
-# harperive <small>2.0.0</small>
+# harperive <small>v2.0.0</small>
 
 > A NodeJs Client for HarperDB.
 
