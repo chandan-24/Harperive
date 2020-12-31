@@ -2,6 +2,8 @@
 
 ## v2.0.1 - latest
 
+*31/12/2020*
+
 ### Bug Fix
 
 - error occurred while executing functions
