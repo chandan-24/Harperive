@@ -40,4 +40,4 @@
 
 *02/06/2020*
 
-- Intial realse
+- Intial release
