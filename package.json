@@ -22,7 +22,7 @@
   "bugs": {
     "url": "https://github.com/chandan-24/Harperive/issues"
   },
-  "homepage": "https://github.com/chandan-24/Harperive#readme",
+  "homepage": "https://chandan-24.github.io/Harperive/",
   "dependencies": {
     "request": "^2.88.2"
   }
