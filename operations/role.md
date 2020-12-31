@@ -30,7 +30,6 @@ const permission = {
     "more_table_name": {},
   },
   "more_schema_name": {},
-  "cluster_user": Boolean,
   "super_user": Boolean,
 }
 ```
