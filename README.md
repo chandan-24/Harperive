@@ -77,24 +77,18 @@ const DB_CONFIG = {
 const Client = harperive.Client;
 const client = new Client(DB_CONFIG);
 
-
 // function call with callback
-
 client.dbOperation(options, (err, res) => {
   if(err) console.log(err);
   else console.log(res);
 });
 
-
 // function call expecting promise
-
 client.dbOperation(options)
   .then(res => console.log(res))
   .catch(err => console.log(err));
 
-
 // function call as async/await expecting promise
-
 async function executeQuery() {
   try {
     const res = await client.dbOperation(options)
