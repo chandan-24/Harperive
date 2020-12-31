@@ -1,0 +1,12 @@
+:root {
+  --base-font-size: 16px;
+  --strong-color: #0a76b4;
+  --theme-color: #0a76b4;
+  --heading-font-weight: 900;
+
+  --cover-max-width: 60em;
+  --cover-blockquote-color: #fff;
+  --cover-button-background--hover: #0a76b4;
+  --cover-button-border--hover: #0a76b4;
+  --selection-color: #0a76b4;
+}
