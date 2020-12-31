@@ -24,6 +24,18 @@
 - Custom operation execution, pass you request body with operation you wish to execute to **executeOperation()** method.
 - Improved documentation
 
+## v1.0.2
+
+*23/08/2020*
+
+- Improved docs
+
+## v1.0.1
+
+*21/06/2020*
+
+- Improved docs
+
 ## v1.0.0
 
 *02/06/2020*
