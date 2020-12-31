@@ -13,5 +13,5 @@
   * [auth](operations/auth.md)
   * [Utilities](operations/utilities.md)
   * [Custom Operation](operations/customOperation.md)
-* [Change Logs](changeLog.md)
+* [Release Notes](releaseNotes.md)
 * [LICENSE - "MIT"](license.md)
