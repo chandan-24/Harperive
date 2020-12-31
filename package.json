@@ -1,9 +1,22 @@
 {
   "name": "harperive",
-  "version": "1.0.2",
+  "version": "2.0.0",
   "description": "A Node.Js client to connect HarperDB local or cloud simplifying api request",
   "main": "index.js",
   "types": "types/index.d.ts",
+  "keywords": [
+    "harperdb",
+    "document",
+    "model",
+    "schema",
+    "database",
+    "data",
+    "query",
+    "nosql",
+    "sql",
+    "newsql",
+    "db"
+  ],
   "files": [
     "lib",
     "types",
@@ -27,3 +40,4 @@
     "request": "^2.88.2"
   }
 }
+
